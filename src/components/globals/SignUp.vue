@@ -23,9 +23,7 @@
                             <input type="password" class="form-control" id="signupPassword" v-model="password" placeholder="Password">
                         </div>
 
-                        <div class="alert alert-danger" role="alert" v-if="error">
-                            {{errorMessage}}
-                        </div>
+                        <Alert type="danger" :message="errorMessage" v-if="error"></Alert>
 
                         <button type="submit" class="btn btn-primary" v-on:click="signUp">Sign up</button>
                     </form>
@@ -37,6 +35,7 @@
 
 <script> 
 import ws from '@/services/webservice'
+import Alert from '@/components/globals/Alert'
 
 export default {
     name: 'signUp',
@@ -60,23 +59,25 @@ export default {
                 password: this.password
             }
 
-            ws.axios.post('/auth/register', user)
+            ws.request('post', '/auth/register', user)
             .then((response) => {
                 this.error = false
                 this.errorMessage = ''
 
-                const data = ws.getResponse(response)
-                this.$store.commit('setUser', data.user)
-                this.$store.commit('setToken', data.token)
+                this.$store.commit('setUser', response.user)
+                this.$store.commit('setToken', response.token)
 
                 $('#signUp').modal('hide')
+                router.push(this.nextRoute)
             })
             .catch((error) => {
                 this.error = true
-                this.errorMessage = ws.getErrorMessage(error)
+                this.errorMessage = error
             })
-        },
-
+        }
+    },
+    components: {
+        Alert
     }
 }
 </script>

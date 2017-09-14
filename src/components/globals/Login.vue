@@ -19,10 +19,8 @@
                             <input type="password" class="form-control" id="loginPassword" v-model="password" placeholder="Password">
                         </div>
 
-                        <div class="alert alert-danger" role="alert" v-if="error">
-                            {{errorMessage}}
-                        </div>
-
+                        <Alert type="danger" :message="errorMessage" v-if="error"></Alert>
+                        
                         <button type="submit" class="btn btn-primary" v-on:click="login">Login</button>
                     </form>
                 </div>
@@ -34,6 +32,7 @@
 <script>
 import ws from '@/services/webservice'
 import router from '@/router/index'
+import Alert from '@/components/globals/Alert'
 
 export default {
     name: 'login',
@@ -44,6 +43,11 @@ export default {
 
             error: false,
             errorMessage: ''
+        }
+    },
+    computed: {
+        nextRoute() {
+            return this.$store.state.nextRoute
         }
     },
     methods: {
@@ -59,23 +63,25 @@ export default {
                 user.username = this.username
             }
 
-            ws.axios.post('/auth/login', user)
+            ws.request('post', '/auth/login', user)
             .then((response) => {
                 this.error = false
                 this.errorMessage = ''
 
-                const data = ws.getResponse(response)
-                this.$store.commit('setUser', data.user)
-                this.$store.commit('setToken', data.token)
+                this.$store.commit('setUser', response.user)
+                this.$store.commit('setToken', response.token)
 
                 $('#login').modal('hide')
-                router.push('/logged')
+                router.push(this.nextRoute)
             })
             .catch((error) => {
                 this.error = true
-                this.errorMessage = ws.getErrorMessage(error)
+                this.errorMessage = error
             })
         }
+    },
+    components: {
+        Alert
     }
 }
 </script>

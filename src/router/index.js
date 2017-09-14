@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Logged from '@/components/Logged'
+import Profile from '@/components/Profile'
 
 Vue.use(Router)
 
@@ -24,6 +25,12 @@ const router = new Router({
             path: '/logged',
             name: 'Logged',
             component: Logged,
+            beforeEnter: requireAuth
+        },
+        {
+            path: '/profile',
+            name: 'Profile',
+            component: Profile,
             beforeEnter: requireAuth
         }
     ]

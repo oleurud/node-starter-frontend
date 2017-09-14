@@ -9,27 +9,8 @@ Vue.use(Vuex)
 
 Vue.config.productionTip = false
 
-const store = new Vuex.Store({
-    state: {
-        user: JSON.parse(localStorage.getItem('user')),
-        token: localStorage.getItem('token')
-    },
-    mutations: {
-        setUser(state, user) {
-            state.user = user
-            localStorage.setItem('user', JSON.stringify(user))
-        },
-        setToken(state, token) {
-            state.token = token
-            localStorage.setItem('token', token)
-        },
-        logout(state) {
-            state.user = null
-            state.token = null
-            localStorage.clear()
-        }
-    }
-})
+import { createDefaultStore } from './store'
+const store = createDefaultStore(Vuex)
 
 /* eslint-disable no-new */
 new Vue({

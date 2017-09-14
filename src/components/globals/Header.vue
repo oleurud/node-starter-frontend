@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="#">Node starter</a>
+            <router-link class="navbar-brand" to="/">Node Starter</router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -12,7 +12,7 @@
                 </ul>
                 <ul class="navbar-nav" v-if="user">
                     <li class="nav-item">
-                        <a class="nav-link">{{user.username}}</a>
+                        <router-link class="nav-link" to="/profile">{{user.username}}</router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" v-on:click="logout">Logout</a>
