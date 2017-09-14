@@ -5,9 +5,10 @@ let store
 function createDefaultStore(Vuex) {
     let defaultUser
     try {
-        defaultUser = JSON.parse(localStorage.getItem('user'))
+        if(localStorage) {
+            defaultUser = JSON.parse(localStorage.getItem('user'))
+        }
     } catch (error) {
-        defaultUser = null
         localStorage.clear()
     }
 

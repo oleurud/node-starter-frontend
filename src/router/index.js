@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { getStore } from '@/store'
 import Home from '@/components/Home'
 import Logged from '@/components/Logged'
 import Profile from '@/components/Profile'
@@ -7,7 +8,8 @@ import Profile from '@/components/Profile'
 Vue.use(Router)
 
 function requireAuth(to, from, next) {
-    if(localStorage.getItem('user') && localStorage.getItem('token')) {
+    const store = getStore()
+    if(store.state.user && store.state.token) {
         next()
     } else {
         next('/')
