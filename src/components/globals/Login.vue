@@ -71,13 +71,36 @@ export default {
                 this.$store.commit('setUser', response.user)
                 this.$store.commit('setToken', response.token)
 
-                $('#login').modal('hide')
-                router.push(this.nextRoute)
+                this.getPayments(response.token)
+
+                this.clean()
+
+                if(this.nextRoute) {
+                    router.push(this.nextRoute)
+                }
             })
             .catch((error) => {
                 this.error = true
                 this.errorMessage = error
             })
+        },
+
+        getPayments(token) {
+            ws.request('get', '/user/payments', null, token)
+            .then((response) => {
+                this.$store.commit('setPayments', response)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        },
+
+        clean() {
+            $('#login').modal('hide')
+            $('#loginUsername').val('')
+            $('#loginPassword').val('')
+            this.username = ''
+            this.password = ''
         }
     },
     components: {

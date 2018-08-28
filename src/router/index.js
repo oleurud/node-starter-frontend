@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { getStore } from '@/store'
 import Home from '@/components/Home'
-import Logged from '@/components/Logged'
-import Profile from '@/components/Profile'
+import UserData from '@/components/pages/account/UserData'
+import ChangePassword from '@/components/pages/account/ChangePassword'
 
 Vue.use(Router)
 
@@ -24,15 +24,15 @@ const router = new Router({
             component: Home
         },
         {
-            path: '/logged',
-            name: 'Logged',
-            component: Logged,
+            path: '/account/user',
+            name: 'UserData',
+            component: UserData,
             beforeEnter: requireAuth
         },
         {
-            path: '/profile',
-            name: 'Profile',
-            component: Profile,
+            path: '/account/password',
+            name: 'ChangePassword',
+            component: ChangePassword,
             beforeEnter: requireAuth
         }
     ]

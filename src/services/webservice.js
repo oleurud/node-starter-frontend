@@ -3,14 +3,17 @@
 import axios from 'axios'
 import router from '@/router/index'
 import { getStore } from '@/store'
+import getDeviceInfo from './deviceInfo'
 
 const config = {
     baseURL: 'http://localhost:8000',
     timeout: 10000,
     headers: {
-        'X-device': 'chrome1'
+        'X-device': getDeviceInfo()
     }
 }
+
+const AUTH_FAILED_CODES = [10001, 10002, 10003, 10004]
 
 export default {
     request(method, endpoint, params = null, token = null) {
@@ -19,7 +22,7 @@ export default {
         }
 
         const instance = axios.create(config)
-        
+
         return new Promise( (resolve, reject) => {
             instance[method.toLowerCase()](endpoint, params)
                 .then((response) => {
@@ -27,14 +30,18 @@ export default {
                 })
                 .catch((error) => {
                     // Token expired
-                    if(error.response.data.error.code === 1004) {
-                        this.handleTokenExpired()
-                        resolve()
+                    if(!error.response) {
+                        reject(error.message)
                     } else {
-                        if (error.response.data.error.data && error.response.data.error.data.error)
-                            reject(error.response.data.error.data.error)
-                        else
-                            reject(error.response.data.error.message)
+                        if(AUTH_FAILED_CODES.indexOf(error.response.data.error.code) > -1) {
+                            this.handleAuthFailed()
+                            resolve()
+                        } else {
+                            if (error.response.data.error.data && error.response.data.error.data.error)
+                                reject(error.response.data.error.data.error)
+                            else
+                                reject(error.response.data.error.message)
+                        }
                     }
                 })
         })

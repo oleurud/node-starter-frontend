@@ -67,13 +67,26 @@ export default {
                 this.$store.commit('setUser', response.user)
                 this.$store.commit('setToken', response.token)
 
-                $('#signUp').modal('hide')
-                router.push(this.nextRoute)
+                this.clean()
+
+                if(this.nextRoute) {
+                    router.push(this.nextRoute)
+                }
             })
             .catch((error) => {
                 this.error = true
                 this.errorMessage = error
             })
+        },
+
+        clean() {
+            $('#signUp').modal('hide')
+            $('#signupEmail').val('')
+            $('#signupUsername').val('')
+            $('#signupPassword').val('')
+            this.username = ''
+            this.email = ''
+            this.password = ''
         }
     },
     components: {
