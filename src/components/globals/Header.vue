@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container">
-                <router-link class="navbar-brand" to="/">Node Starter</router-link>
+                <router-link class="navbar-brand" to="/">Node starter</router-link>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -12,11 +12,15 @@
 
                     </ul>
                     <ul class="navbar-nav" v-if="user">
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/profile">{{user.username}}</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" v-on:click="logout">Logout</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                {{user.username}}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <router-link class="dropdown-item" to="/account/user">Account</router-link>
+                                <li class="dropdown-divider"></li>
+                                <a class="dropdown-item" v-on:click="logout">Logout</a>
+                            </div>
                         </li>
                     </ul>
                     <ul class="navbar-nav" v-else>
